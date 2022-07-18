@@ -1,0 +1,8 @@
+<mat-selection-list 
+  [multiple]="false"
+  (selectionChanged)="onSelectionChanged($event)"
+  >
+  <mat-list-option *ngFor="let option of options">
+    {{option}}
+  </mat-list-option>
+</mat-selection-list>
