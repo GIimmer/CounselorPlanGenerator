@@ -1,10 +1,24 @@
 <div id="appWrapper">
-  <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
-    <mat-step [stepControl]="firstFormGroup">
+  <mat-stepper orientation="vertical" [linear]="true" #stepper>
+    <mat-step>
       <app-category-selector
-        [categories]="categores"
         (categorySelected)="onCategorySelected($event)"
       ></app-category-selector>
+    </mat-step>
+    <mat-step>
+      <app-subcategory-selector
+        [selectedCategoryId]="selectedCategory?.id"
+        (subcategorySelected)="onSubcategorySelected($event)"
+      >
+      </app-subcategory-selector>
+    </mat-step>
+    <mat-step>
+      <app-manifestation-selector
+        *ngIf="selectedSubcategory"
+        [selectedSubcategory]="selectedSubcategory"
+        (manifestationSelected)="onManifestationSelected($event)"
+      >
+      </app-manifestation-selector>
     </mat-step>
   </mat-stepper>
 </div>

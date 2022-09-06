@@ -1,5 +1,5 @@
 <div id="categorySelectorWrapper">
-  <div *ngFor="let category of categories" class="categoryOption" (click)="onCategorySelected(category)">
-    <h2>{{ category.value }}</h2>
+  <div *ngFor="let category of categories$ | async" class="categoryOption" (click)="onCategorySelected(category)">
+    <h2>{{ category.description }}</h2>
   </div>
 </div>

@@ -1,14 +1,14 @@
-import { Category, Subcategory } from "../options-tree.models";
+import { PredefinedCategory, PredefinedSubcategory } from "../options-tree.models";
 
-const SubCategories: Subcategory[] = [
-  { value: '', manifestations: [] },
-  { value: '', manifestations: [] },
-  { value: '', manifestations: [] },
-  { value: '', manifestations: [] },
-  { value: '', manifestations: [] },
+const SubCategories: PredefinedSubcategory[] = [
+  { description: '', manifestations: [] },
+  { description: '', manifestations: [] },
+  { description: '', manifestations: [] },
+  { description: '', manifestations: [] },
+  { description: '', manifestations: [] },
 ];
 
-export const Skills: Category = {
-  value: 'Skills',
+export const Skills: PredefinedCategory = {
+  description: 'Skills',
   subCategories: SubCategories
 }

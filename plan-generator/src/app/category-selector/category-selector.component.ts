@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { db, DBCategory } from 'db';
+import { liveQuery } from 'dexie';
 import { Category } from '../options-tree/options-tree.models';
 
 @Component({
@@ -6,14 +8,19 @@ import { Category } from '../options-tree/options-tree.models';
   templateUrl: './category-selector.component.html',
   styleUrls: ['./category-selector.component.scss']
 })
-export class CategorySelectorComponent implements OnInit {
-  @Input() categories: Category[] = [];
-  @Output() categorySelected: EventEmitter<Category> = new EventEmitter();
+export class CategorySelectorComponent {
+  @Output() categorySelected: EventEmitter<DBCategory> = new EventEmitter();
+  categories$ = liveQuery(
+    () => this.listCategories()
+  ); 
 
-  ngOnInit(): void {}
-
-  onCategorySelected(category: Category) {
-    let lol;
+  async listCategories() {
+    const lel = await db.categories.toArray();
+    return lel;
+    // return await db.categories.toArray();
   }
 
+  onCategorySelected(category: DBCategory) {
+    this.categorySelected.emit(category);
+  }
 }

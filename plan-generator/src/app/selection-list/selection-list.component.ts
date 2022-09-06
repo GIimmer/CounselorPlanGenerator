@@ -13,8 +13,8 @@ export class SelectionListComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSelectionChanged(event: MatSelectionListChange) {
-    this.optionSelected.emit(event.options.find(option => option.selected)?.value);
+  onSelectionChanged(event: any) {
+    this.optionSelected.emit((event as MatSelectionListChange).options.find(option => option.selected)?.value);
   }
 
 }

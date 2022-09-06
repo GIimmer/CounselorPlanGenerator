@@ -1,0 +1,8 @@
+div#appWrapper {
+  display: flex;
+  justify-content: center;
+
+  mat-stepper {
+    width: 800px;
+  }
+}
