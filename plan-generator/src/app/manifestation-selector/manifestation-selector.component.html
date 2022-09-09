@@ -1,11 +1,13 @@
-<ng-container *ngIf="selectedSubcategory">
+<ng-container *ngIf="selectedSubcategoryId">
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Search for or define new manifestations</mat-label>
     <textarea matInput (keyup.enter)="addManifestation($event)"></textarea>
   </mat-form-field>
-  <mat-selection-list #manifestations>
-    <mat-list-option *ngFor="let manifestation of manifestations$ | async" (click)="onManifestationSelected(manifestation)">
-      {{ manifestation.description }}
-    </mat-list-option>
-  </mat-selection-list>
+  <div id="manifestationSelectorWrapper">
+    <div *ngFor="let manifestation of manifestations" [ngClass]="{ 'selected': manifestation.selected }" (click)="onManifestationSelected(manifestation)">
+      <p>{{ manifestation.description }}</p>
+      <mat-icon style="color:lightgray" *ngIf="!manifestation.selected">close</mat-icon>
+      <mat-icon *ngIf="manifestation.selected">check</mat-icon>
+    </div>
+  </div>
 </ng-container>

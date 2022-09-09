@@ -1,35 +1,30 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { db, DBCategory, DBSubcategory } from 'db';
-import { liveQuery } from 'dexie';
-import { Category, Subcategory } from '../options-tree/options-tree.models';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { db, DBSubcategory } from 'db';
 
 @Component({
   selector: 'app-subcategory-selector',
   templateUrl: './subcategory-selector.component.html',
   styleUrls: ['./subcategory-selector.component.scss'],
 })
-export class SubcategorySelectorComponent implements OnInit {
-  private _selectedCategoryId!: number | undefined;
-  @Input()
-  public get selectedCategoryId(): number | undefined {
+export class SubcategorySelectorComponent {
+  private _selectedCategoryId!: number;
+  public get selectedCategoryId(): number {
     return this._selectedCategoryId;
   }
-  public set selectedCategoryId(value: number | undefined) {
-    this._selectedCategoryId = value;
+  @Input()
+  public set selectedCategoryId(value: number) {
+    if (typeof value === 'number') {
+      this._selectedCategoryId = value as number;
+      this.setSubcategories();
+    }
   }
+
   @Output() subcategorySelected: EventEmitter<DBSubcategory> = new EventEmitter();
 
-  subcategories$ = liveQuery(
-    () => this.listSubcategories()
-  ); 
+  subcategories: DBSubcategory[] | undefined;
 
-  async listSubcategories() {
-    // const lol = this.selectedCategory;
-    const lol = await db.subcategories?.where({ categoryId: this.selectedCategoryId }).toArray();
-    return lol
-  }
-
-  ngOnInit(): void {
+  async setSubcategories() {
+    this.subcategories = await db.subcategories?.where({ categoryId: this.selectedCategoryId }).toArray();
   }
 
   onSubcategorySelected(subcategory: DBSubcategory) {

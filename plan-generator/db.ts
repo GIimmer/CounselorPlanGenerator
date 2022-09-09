@@ -37,10 +37,10 @@ export class AppDB extends Dexie {
 
   constructor() {
     super('ngdexieliveQuery');
-    this.version(1).stores({
+    this.version(2).stores({
       categories: '++id',
       subcategories: '++id, categoryId',
-      manifestations: '++id, subcategoryId',
+      manifestations: '++id, subcategoryId, selected',
     });
     this.on('populate', () => this.populate());
   }

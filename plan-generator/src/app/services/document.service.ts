@@ -10,10 +10,10 @@ export class DocumentService {
   generate(name: string, categories: PredefinedCategory[]) {
     const title = `Plan for ${name}`;
 
-    const subcategories = categories.flatMap(category => category.subCategories);
+    // const subcategories = categories.flatMap(category => category.subCategories);
     const sections = [];
-    sections.push(this.getSection('Problem', this.getProblemStatement(subcategories)));
-    sections.push(this.getSection('Goal', this.getGoalStatement(subcategories)));
+    // sections.push(this.getSection('Problem', this.getProblemStatement(subcategories)));
+    // sections.push(this.getSection('Goal', this.getGoalStatement(subcategories)));
     const section: ISectionOptions = {
       children: [
         new Paragraph({ text: 'hello' })
@@ -58,7 +58,7 @@ export class DocumentService {
     // document.addParagraph(new Paragraph(title).title());
     // document.addParagraph(this.createHeading('Exception Overview'));
     Packer.toBlob(document).then(blob => {
-      fs.saveAs(blob, "MyDocument.docx")
+      fs.saveAs(blob, `${userName}Plan.docx`)
     })
     return document;
   }

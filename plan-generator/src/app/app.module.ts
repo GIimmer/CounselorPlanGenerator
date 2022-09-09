@@ -11,6 +11,8 @@ import { CategorySelectorComponent } from './category-selector/category-selector
 import { SubcategorySelectorComponent } from './subcategory-selector/subcategory-selector.component';
 import { ManifestationSelectorComponent } from './manifestation-selector/manifestation-selector.component';
 import { DocumentService } from './services/document.service';
+import { MatIconModule } from '@angular/material/icon';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,11 +23,13 @@ import { DocumentService } from './services/document.service';
     ManifestationSelectorComponent
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatListModule,
     MatStepperModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule
   ],
   providers: [
     DocumentService

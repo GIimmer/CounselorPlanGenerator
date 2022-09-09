@@ -1,24 +1,41 @@
 <div id="appWrapper">
-  <mat-stepper orientation="vertical" [linear]="true" #stepper>
-    <mat-step>
-      <app-category-selector
-        (categorySelected)="onCategorySelected($event)"
-      ></app-category-selector>
-    </mat-step>
-    <mat-step>
-      <app-subcategory-selector
-        [selectedCategoryId]="selectedCategory?.id"
-        (subcategorySelected)="onSubcategorySelected($event)"
-      >
-      </app-subcategory-selector>
-    </mat-step>
-    <mat-step>
-      <app-manifestation-selector
-        *ngIf="selectedSubcategory"
-        [selectedSubcategory]="selectedSubcategory"
-        (manifestationSelected)="onManifestationSelected($event)"
-      >
-      </app-manifestation-selector>
-    </mat-step>
-  </mat-stepper>
+  <div id="formWrapper">
+    <div id="metaControls">
+      <mat-form-field appearance="standard">
+        <mat-label>Student Name:</mat-label>
+        <input matInput [formControl]="name" placeholder="Ex. Jane">
+      </mat-form-field>
+      <div class="button" (click)="onClickGenerate()">
+        <h2>GENERATE</h2>
+      </div>
+      <div class="button" (click)=onClickReset()>
+        <h2>RESET</h2>
+      </div>
+    </div>
+    <div [hidden]="!name.value">
+    <mat-stepper  orientation="vertical" [linear]="true" #stepper>
+      <mat-step>
+        <app-category-selector
+          (categorySelected)="onCategorySelected($event)"
+        ></app-category-selector>
+      </mat-step>
+      <mat-step>
+        <app-subcategory-selector
+          *ngIf="selectedCategory"
+          [selectedCategoryId]="selectedCategory.id"
+          (subcategorySelected)="onSubcategorySelected($event)"
+        >
+        </app-subcategory-selector>
+      </mat-step>
+      <mat-step>
+        <app-manifestation-selector
+          *ngIf="selectedSubcategory"
+          [selectedSubcategoryId]="selectedSubcategory.id"
+          (manifestationSelected)="onManifestationSelected($event)"
+        >
+        </app-manifestation-selector>
+      </mat-step>
+    </mat-stepper>
+    </div>
+  </div>
 </div>

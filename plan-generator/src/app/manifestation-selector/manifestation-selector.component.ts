@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { db, DBManifestation, DBSubcategory } from 'db';
-import { liveQuery } from 'dexie';
-import { Manifestation } from '../options-tree/options-tree.models';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { db, DBManifestation } from 'db';
 import { IndexedDBService } from '../services/indexed-db.service';
 
 @Component({
@@ -9,33 +7,38 @@ import { IndexedDBService } from '../services/indexed-db.service';
   templateUrl: './manifestation-selector.component.html',
   styleUrls: ['./manifestation-selector.component.scss']
 })
-export class ManifestationSelectorComponent implements OnInit {
-  @Input() selectedSubcategory!: DBSubcategory;
+export class ManifestationSelectorComponent {
+  private _selectedSubcategoryId!: number;
+  public get selectedSubcategoryId(): number {
+    return this._selectedSubcategoryId;
+  }
+  @Input()
+  public set selectedSubcategoryId(value: number) {
+    if (typeof value === 'number') {
+      this._selectedSubcategoryId = value;
+      this.setManifestations();
+    }
+  }
+
   @Output() manifestationsSubmitted: EventEmitter<DBManifestation> = new EventEmitter();
 
-  manifestations$ = liveQuery(
-    () => this.listManifestations()
-  ); 
+  manifestations: DBManifestation[] = [];
 
-  async listManifestations() {
-    return await db.manifestations
-      .where({
-        subcategoryId: this.selectedSubcategory.id,
-      })
-      .toArray();
+  async setManifestations() {
+    this.manifestations = await db.manifestations?.where({ subcategoryId: this.selectedSubcategoryId }).toArray();
+    let lol = this.manifestations;
   }
 
-  ngOnInit(): void {
-  }
-
-
-  addManifestation(event: Event) {
+  async addManifestation(event: Event) {
     const newDescription = (event.currentTarget as HTMLTextAreaElement).value;
-    IndexedDBService.createNewManifestation(this.selectedSubcategory, newDescription);
+    IndexedDBService.createNewManifestation(this.selectedSubcategoryId as number, newDescription);
+    (event.currentTarget as HTMLTextAreaElement).value = '';
+    this.setManifestations();
   }
 
-  onManifestationSelected(manifestation: DBManifestation) {
-    IndexedDBService.toggleManifestationSelected(manifestation);
+  async onManifestationSelected(manifestation: DBManifestation) {
+    await IndexedDBService.toggleManifestationSelected(manifestation);
+    this.setManifestations()
   }
 
   submitManifestations() {}

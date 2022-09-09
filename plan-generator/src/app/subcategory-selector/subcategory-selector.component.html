@@ -1,6 +1,6 @@
 <div id="subcategorySelectorWrapper">
   <ng-container *ngIf="selectedCategoryId">
-    <div *ngFor="let subcategory of subcategories$ | async" class="subcategoryOption" (click)="onSubcategorySelected(subcategory)">
+    <div *ngFor="let subcategory of subcategories" class="subcategoryOption" (click)="onSubcategorySelected(subcategory)">
       <h2>{{ subcategory.description }}</h2>
     </div>
   </ng-container>
