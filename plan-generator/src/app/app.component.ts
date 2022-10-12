@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { DBCategory, DBManifestation, DBSubcategory } from 'db';
 import { Categories } from './options-tree/options-tree';
@@ -15,7 +15,7 @@ export class AppComponent {
   @ViewChild('stepper') stepper!: MatStepper;
   title = 'plan-generator';
 
-  name = new FormControl('');
+  name = new UntypedFormControl('');
 
   selectedCategory!: Required<DBCategory>;
   selectedSubcategory!: Required<DBSubcategory>;
