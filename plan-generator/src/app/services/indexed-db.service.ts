@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { db, DBManifestation, DBSubcategory, } from 'db';
-import { Manifestation, Subcategory } from '../options-tree/options-tree.models';
+import { db, DBManifestation } from 'db';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,13 @@ export class IndexedDBService {
     return Object.assign({ id: newManifestationId }, newManifestation);
   }
 
-  public static async incrementManifestationFreq({ id }: DBManifestation) {
-    const manifestation = await db.manifestations.get(id as number);
+  public static async incrementManifestationFreq(manifestation: DBManifestation) {
+    await db.manifestations.update(manifestation, { frequency: manifestation.frequency + 1 });
+
+  }
+
+  public static async deleteManifestation({ id }: DBManifestation) {
+    const lol = await db.manifestations.delete(id);
   }
 
   public static async deselectAllManifestations() {

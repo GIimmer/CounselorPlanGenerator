@@ -4,10 +4,11 @@
     <textarea matInput (keyup.enter)="addManifestation($event)"></textarea>
   </mat-form-field>
   <div id="manifestationSelectorWrapper">
-    <div *ngFor="let manifestation of manifestations" [ngClass]="{ 'selected': manifestation.selected }" (click)="onManifestationSelected(manifestation)">
+    <div *ngFor="let manifestation of manifestations" class="manifestation" [ngClass]="{ 'selected': manifestation.selected }" (click)="onManifestationSelected(manifestation)">
       <p>{{ manifestation.description }}</p>
       <mat-icon style="color:lightgray" *ngIf="!manifestation.selected">close</mat-icon>
       <mat-icon *ngIf="manifestation.selected">check</mat-icon>
+      <div class="closeButton" (click)="onDeleteManifestation(manifestation)"></div>
     </div>
   </div>
 </ng-container>

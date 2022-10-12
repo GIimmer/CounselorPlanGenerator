@@ -1,9 +1,9 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { DBCategory, DBManifestation, DBSubcategory } from 'db';
 import { Categories } from './options-tree/options-tree';
-import { DocumentService } from './services/document.service';
+import { DocumentService, ManifestationsRef } from './services/document.service';
 import { IndexedDBService } from './services/indexed-db.service';
 
 @Component({
@@ -19,16 +19,27 @@ export class AppComponent {
 
   selectedCategory!: Required<DBCategory>;
   selectedSubcategory!: Required<DBSubcategory>;
-  selectedManifestationsRef: { [category: string]: { [subcategory: string]: DBManifestation[] } } = {};
+  selectedManifestationsRef: ManifestationsRef = {};
 
   categories = Categories;
 
-  constructor(private document: DocumentService, private cd: ChangeDetectorRef){}
+  constructor(private document: DocumentService){
+    IndexedDBService.deselectAllManifestations();
+  }
 
   onClickGenerate() {
     const studentName = this.name.value;
     if (studentName) {
-      this.document.create(studentName);
+      this.document.gen(studentName, this.selectedManifestationsRef);
+      Object.values(this.selectedManifestationsRef)
+        .forEach((subcategoryRef) => {
+          Object.values(subcategoryRef)
+            .forEach((dbManifestation) => {
+              dbManifestation.forEach(dbManifestation => {
+                IndexedDBService.incrementManifestationFreq(dbManifestation);
+              })
+            })
+        })
     }
   }
 
@@ -51,12 +62,12 @@ export class AppComponent {
     this.stepper.next();
   }
 
-  onManifestationSelected(manifestation: any) {
-    this.addManifestationToReference(manifestation as DBManifestation);
-  }
-
-  onManifestationDeselected(manifestation: any) {
-    this.removeManifestationFromReference(manifestation as DBManifestation);
+  onManifestationToggled(manifestation: any) {
+    if ((manifestation as DBManifestation).selected === true) {
+      this.addManifestationToReference(manifestation as DBManifestation);
+    } else {
+      this.removeManifestationFromReference(manifestation as DBManifestation);
+    }
   }
 
   private addManifestationToReference(manifestation: DBManifestation) {

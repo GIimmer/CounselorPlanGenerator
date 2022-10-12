@@ -20,17 +20,20 @@ export class ManifestationSelectorComponent {
     }
   }
 
-  @Output() manifestationsSubmitted: EventEmitter<DBManifestation> = new EventEmitter();
+  @Output() manifestationToggled: EventEmitter<DBManifestation> = new EventEmitter();
 
   manifestations: DBManifestation[] = [];
 
   async setManifestations() {
-    this.manifestations = await db.manifestations?.where({ subcategoryId: this.selectedSubcategoryId }).toArray();
-    let lol = this.manifestations;
+    this.manifestations = await db.manifestations
+    ?.where({ subcategoryId: this.selectedSubcategoryId })
+    .reverse()
+    .sortBy('frequency');
   }
 
   async addManifestation(event: Event) {
-    const newDescription = (event.currentTarget as HTMLTextAreaElement).value;
+    const newDescriptionWithNewline = (event.currentTarget as HTMLTextAreaElement).value;
+    const newDescription = newDescriptionWithNewline.replace(/\n/g, '');
     IndexedDBService.createNewManifestation(this.selectedSubcategoryId as number, newDescription);
     (event.currentTarget as HTMLTextAreaElement).value = '';
     this.setManifestations();
@@ -38,7 +41,13 @@ export class ManifestationSelectorComponent {
 
   async onManifestationSelected(manifestation: DBManifestation) {
     await IndexedDBService.toggleManifestationSelected(manifestation);
+    this.manifestationToggled.emit(manifestation)
     this.setManifestations()
+  }
+
+  async onDeleteManifestation(manifestation: DBManifestation) {
+    await IndexedDBService.deleteManifestation(manifestation);
+    this.setManifestations();
   }
 
   submitManifestations() {}

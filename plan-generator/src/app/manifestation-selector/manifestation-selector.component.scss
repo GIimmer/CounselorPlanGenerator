@@ -13,7 +13,8 @@ mat-selection-list {
   overflow: auto;
   width: 100%;
 
-  div {
+  div.manifestation {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -30,6 +31,19 @@ mat-selection-list {
     mat-icon {
       scale: 2;
       vertical-align: middle;
+    }
+
+    div.closeButton {
+      position: absolute;
+      width: 10px;
+      top: 0px;
+      bottom: 0px;
+      right: 0px;
+      background-color: rgb(255, 240, 240);
+
+      &:hover {
+        background-color: rgb(255, 186, 186);
+      }
     }
 
 

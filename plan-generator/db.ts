@@ -52,8 +52,8 @@ export class AppDB extends Dexie {
       subCategories.forEach(async ({ description, manifestations }) => {
         const subcategoryId = await db.subcategories.add({ categoryId, description});
       
-        const manifestationsArr = manifestations.reduce((acc, { description }) => {
-            const temp: DBManifestation = { description, frequency: 1, subcategoryId, selected: false };
+        const manifestationsArr = manifestations.reduce((acc, { description, frequency }) => {
+            const temp: DBManifestation = { description, frequency: frequency || 1, subcategoryId, selected: false };
             acc.push(temp);
             return acc;
         }, [] as DBManifestation[]);

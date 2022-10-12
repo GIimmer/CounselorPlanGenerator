@@ -31,7 +31,7 @@
         <app-manifestation-selector
           *ngIf="selectedSubcategory"
           [selectedSubcategoryId]="selectedSubcategory.id"
-          (manifestationSelected)="onManifestationSelected($event)"
+          (manifestationToggled)="onManifestationToggled($event)"
         >
         </app-manifestation-selector>
       </mat-step>
